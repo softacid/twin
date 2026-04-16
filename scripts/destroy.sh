@@ -20,15 +20,24 @@ cd "$(dirname "$0")/../terraform"
 
 # Get AWS Account ID and Region for backend configuration
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-AWS_REGION=${DEFAULT_AWS_REGION:-eu-west-1}
+STATE_BUCKET="twin-terraform-state-${AWS_ACCOUNT_ID}"
+
+# Backend state bucket can exist in a different region than DEFAULT_AWS_REGION.
+# Auto-detect and use the real bucket region to avoid S3 301 redirect errors.
+BUCKET_LOCATION=$(aws s3api get-bucket-location --bucket "$STATE_BUCKET" --query 'LocationConstraint' --output text 2>/dev/null || true)
+if [ "$BUCKET_LOCATION" = "None" ] || [ -z "$BUCKET_LOCATION" ]; then
+    STATE_BUCKET_REGION="us-east-1"
+else
+    STATE_BUCKET_REGION="$BUCKET_LOCATION"
+fi
 
 # Initialize terraform with S3 backend
 echo "🔧 Initializing Terraform with S3 backend..."
 terraform init -input=false \
-  -backend-config="bucket=twin-terraform-state-${AWS_ACCOUNT_ID}" \
+  -backend-config="bucket=${STATE_BUCKET}" \
   -backend-config="key=${ENVIRONMENT}/terraform.tfstate" \
-  -backend-config="region=${AWS_REGION}" \
-  -backend-config="dynamodb_table=twin-terraform-locks" \
+  -backend-config="region=${STATE_BUCKET_REGION}" \
+  -backend-config="use_lockfile=true" \
   -backend-config="encrypt=true"
 
 # Check if workspace exists
