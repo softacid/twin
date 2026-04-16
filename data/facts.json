@@ -1,0 +1,22 @@
+{
+  "full_name": "Teodor Birca",
+  "name": "Teo",
+  "current_role": "Devops engineer",
+  "location": "Newbridge Ireland",
+  "email": "bircateodor@gmail.com",
+  "linkedin": "linkedin.com/in/teodor-birca-13520282/",
+  "specialties": [
+    "Devops",
+    "cloud",
+    "infrastructure",
+    "security"
+  ],
+  "years_experience": 28,
+  "education": [
+    {
+      "degree": "No degree",
+      "institution": "Transilvania Brasov",
+      "year": "2000"
+    }
+  ]
+}
