@@ -10,10 +10,11 @@ terraform {
 }
 
 provider "aws" {
-  # Uses AWS CLI configuration (aws configure)
+  region = var.aws_region
 }
 
 provider "aws" {
-  alias  = "eu_west_1"
-  region = "eu-west-1"
+  # CloudFront ACM certificates must live in us-east-1.
+  alias  = "us_east_1"
+  region = "us-east-1"
 }

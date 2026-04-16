@@ -12,6 +12,7 @@ fi
 
 ENVIRONMENT=$1
 PROJECT_NAME=${2:-twin}
+AWS_REGION="eu-west-1"
 
 echo "🗑️ Preparing to destroy ${PROJECT_NAME}-${ENVIRONMENT} infrastructure..."
 
@@ -83,9 +84,9 @@ fi
 
 # Run terraform destroy with auto-approve
 if [ "$ENVIRONMENT" = "prod" ] && [ -f "prod.tfvars" ]; then
-    terraform destroy -var-file=prod.tfvars -var="project_name=$PROJECT_NAME" -var="environment=$ENVIRONMENT" -auto-approve
+    terraform destroy -var-file=prod.tfvars -var="project_name=$PROJECT_NAME" -var="environment=$ENVIRONMENT" -var="aws_region=$AWS_REGION" -auto-approve
 else
-    terraform destroy -var="project_name=$PROJECT_NAME" -var="environment=$ENVIRONMENT" -auto-approve
+    terraform destroy -var="project_name=$PROJECT_NAME" -var="environment=$ENVIRONMENT" -var="aws_region=$AWS_REGION" -auto-approve
 fi
 
 echo "✅ Infrastructure for ${ENVIRONMENT} has been destroyed!"

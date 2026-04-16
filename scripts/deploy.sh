@@ -3,6 +3,7 @@ set -e
 
 ENVIRONMENT=${1:-dev}          # dev | test | prod
 PROJECT_NAME=${2:-twin}
+AWS_REGION="eu-west-1"
 
 echo "🚀 Deploying ${PROJECT_NAME} to ${ENVIRONMENT}..."
 
@@ -40,9 +41,9 @@ fi
 
 # Use prod.tfvars for production environment
 if [ "$ENVIRONMENT" = "prod" ]; then
-  TF_APPLY_CMD=(terraform apply -var-file=prod.tfvars -var="project_name=$PROJECT_NAME" -var="environment=$ENVIRONMENT" -auto-approve)
+  TF_APPLY_CMD=(terraform apply -var-file=prod.tfvars -var="project_name=$PROJECT_NAME" -var="environment=$ENVIRONMENT" -var="aws_region=$AWS_REGION" -auto-approve)
 else
-  TF_APPLY_CMD=(terraform apply -var="project_name=$PROJECT_NAME" -var="environment=$ENVIRONMENT" -auto-approve)
+  TF_APPLY_CMD=(terraform apply -var="project_name=$PROJECT_NAME" -var="environment=$ENVIRONMENT" -var="aws_region=$AWS_REGION" -auto-approve)
 fi
 
 echo "🎯 Applying Terraform..."

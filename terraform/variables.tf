@@ -16,6 +16,12 @@ variable "environment" {
   }
 }
 
+variable "aws_region" {
+  description = "Primary AWS region for application resources"
+  type        = string
+  default     = "eu-west-1"
+}
+
 variable "bedrock_model_id" {
   description = "Bedrock model ID"
   type        = string
