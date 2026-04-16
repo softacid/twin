@@ -23,9 +23,9 @@ variable "aws_region" {
 }
 
 variable "bedrock_model_id" {
-  description = "Bedrock model ID"
+  description = "Bedrock modelId for Converse: use a system inference profile ID (e.g. eu.amazon.nova-micro-v1:0 in EU), not the bare foundation model ID"
   type        = string
-  default     = "amazon.nova-micro-v1:0"
+  default     = "eu.amazon.nova-micro-v1:0"
 }
 
 variable "lambda_timeout" {
